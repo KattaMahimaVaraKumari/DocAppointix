@@ -9,7 +9,7 @@ const Navbar = () => {
     const [token,setToken]=useState(true)
     return (
         <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
-            <div className="flex items-center space-x-2 w-44">
+            <div onClick={()=>{navigate('/')}} className="flex items-center space-x-2 w-44">
                 <img src={assets.logo} alt="logo" className="h-12 w-12 cursor-pointer" />
                 <h1 className="text-xl font-bold cursor-pointer">DocAppointix</h1>
             </div>
