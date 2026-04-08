@@ -1,11 +1,9 @@
 import React, { useContext, useState } from 'react'
 import { assets } from '../assets/assets'
-import { AdminContext } from '../context/adminContext';
 import axios from 'axios'
 import { toast } from 'react-toastify';
 
 const Login = () => {
-
   const [state, setState] = useState('Admin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
