@@ -4,8 +4,13 @@ import { AdminContext } from '../context/AdminContext'
 
 const Navbar = () => {
 
-    const { aToken } = useContext(AdminContext)
-
+    const { aToken , setAToken } = useContext(AdminContext)
+    
+    const logout = () => {
+        navigate('/');
+        aToken && setAToken('');
+        aToken && localStorage.removeItem('aToken')
+    }
     return (
         <div className='flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white'>
             <div className='flex items-center gap-4 text-xs'>
@@ -15,7 +20,7 @@ const Navbar = () => {
                 </div>
                 <p className='border px-2.5 py-0.5 rounded-full border-gray-500'>{aToken ? 'Admin' : 'Doctor'}</p>
             </div>
-            <button className='bg-[#6C757D] text-white text-sm px-10 py-2 rounded cursor-pointer'>Logout</button>
+            <button onClick={logout} className='bg-[#6C757D] text-white text-sm px-10 py-2 rounded cursor-pointer'>Logout</button>
         </div>
     )
 }
