@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { assets } from '../../assets/assets'
+import { AdminContext } from '../../context/AdminContext';
+import { toast, ToastContainer } from 'react-toastify';
+import axios from 'axios'
 
 const AddDoctor = () => {
 
@@ -15,8 +18,42 @@ const AddDoctor = () => {
     const [address1,setAddress1]=useState('');
     const [address2,setAddress2]=useState('');
 
-    const onSubmitHandler = async (event) =>{
+    const { backendUrl, aToken } = useContext(AdminContext);
+
+    const onSubmitHandler = async (event) => {
         event.preventDefault();
+
+        try {
+            if (!docImg) {
+                return toast.error('Image Not Selected')
+            }
+            const formData = new FormData();
+            formData.append('image', docImg);
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('password', password);
+            formData.append('experience', experience);
+            formData.append('fees', Number(fees));
+            formData.append('speciality', speciality);
+            formData.append('degree', degree);
+            formData.append('about', about);
+            formData.append('address', JSON.stringify({ line1: address1, line2: address2 }));
+
+            formData.forEach((value, key) => {
+                console.log(`${key} : ${value}`)
+            })
+
+            const { data } = await axios.post(backendUrl + '/api/admin/add-doctor', formData, { headers: { aToken } })
+
+            if (data.success) {
+                toast.success(data.message)
+            }
+            else{
+                toast.error(data.message);
+            }
+        } catch (error) {
+            
+        }
     }
 
     return (
@@ -68,7 +105,6 @@ const AddDoctor = () => {
                             <p>Fees</p>
                             <input onChange={(e)=>setFees(e.target.value)} value={fees} className=' border border-gray-200 rounded px-3 py-2' type="number" placeholder='Fees' required />
                         </div>
-
                     </div>
 
                     <div className='w-full lg:flex-1 flex flex-col gap-4'>
@@ -99,8 +135,7 @@ const AddDoctor = () => {
                             <p>About Doctor</p>
                             <textarea onChange={(e)=>setAbout(e.target.value)} value={about} className='w-full px-4 pt-2 rounded border border-gray-200' placeholder='write about doctor' rows={5}></textarea>
                         </div>
-
-                        <button type='submit' className='bg-[#6C757D] px-10 py-3 mt-4 text-white rounded-lg'>Add doctor</button>
+                       <button type='submit' className='bg-[#6C757D] px-10 py-3 mt-4 text-white rounded-lg cursor-pointer'>Add doctor</button>
                     </div>
                 </div>
             </div>
