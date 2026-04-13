@@ -1,26 +1,36 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { AppContext } from '../context/AppContext';
 import {assets} from "../assets/assets"
 
 const MyProfile = () => {
 
-  const [userData,setUserData]=useState({
-    name: "Natasha Celine",
-    image:assets.profile_pic,
-    email:"user1234@gmail.com",
-    phone:"+91 99999 54321",
-    address:{
-      line1:"12-505 NP Nagar",
-      line2:"Maharashtra, India"
-    },
-    gender:"Female",
-    dob:"02-20-2000"
-  }); 
+  const {userData,setUserData , token, backendUrl,loadUserProfileData}=useContext(AppContext);
   
   const [isEdit,setIsEdit]=useState(false);
+  const [image,setImage] =useState(false);
 
-  return (
+  const updateUserProfileData = async ()=>{
+
+  }
+
+  return userData && (
     <div className='flex flex-col max-w-lg gap-2 text-sm'>
-      <img className='w-36 rounded' src={userData.image} alt="" />
+
+      {
+        isEdit
+          ? <label htmlFor="image">
+            
+            <div className='inline-block relative cursor-pointer'>
+              <img className="w-36 rounded opacity-75" src={image ? URL.createObjectURL(image) : userData.image} alt="" />
+              <img className='w-10 absolute bottom-12 right-12' src={image ? '' : assets.upload_icon} alt="" />
+            </div>
+
+            <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" hidden />
+          </label>
+          
+          : <img className='w-36 rounded' src={userData.image} alt="" />
+      }
+
       {
         isEdit
         ? <input value={userData.name} onChange={(e)=>setUserData(prev=>({...prev,name:e.target.value}))} type="text" className='bg-gray-50 text-3xl font-medium max-w-60 mt-4' />
@@ -44,9 +54,9 @@ const MyProfile = () => {
           {
             isEdit
             ? <p>
-              <input className='bg-gray-50' onChange={()=>setUserData(prev=>({...prev,address:{...prev.address,line1:e.target.value}}))} value={userData.address.line1} type="text" />
+              <input className='bg-gray-50' onChange={(e)=>setUserData(prev=>({...prev,address:{...prev.address,line1:e.target.value}}))} value={userData.address.line1} type="text" />
               <br />
-              <input className='bg-gray-50' onChange={()=>setUserData(prev=>({...prev,address:{...prev.address,line2:e.target.value}}))} value={userData.address.line2} type="text" />
+              <input className='bg-gray-50' onChange={(e)=>setUserData(prev=>({...prev,address:{...prev.address,line2:e.target.value}}))} value={userData.address.line2} type="text" />
             </p>
             : <p className='text-gray-500'>
                {userData.address.line1}
