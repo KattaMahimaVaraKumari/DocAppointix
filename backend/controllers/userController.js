@@ -158,6 +158,11 @@ const bookAppointment = async (req,res) =>{
 
         const newAppointment=new appointmentModel(appointmentData);
         newAppointment.save()
+
+        //save new slots data in docData
+        await doctorModel.findByIdAndUpdate(docId,{slots_booked})
+
+        res.json({success:true, message:'Appointment booked'})
         
     } catch (error) {
         console.log(error);
@@ -165,4 +170,4 @@ const bookAppointment = async (req,res) =>{
     }
 }
 
-export { registerUser, loginUser, getProfile, updateProfile}
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment}
