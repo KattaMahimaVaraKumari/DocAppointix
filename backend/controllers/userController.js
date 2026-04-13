@@ -141,23 +141,23 @@ const bookAppointment = async (req,res) =>{
             slots_booked[slotDate].push(slotTime);
         }
 
-        const userData=await userModel.fmmindById(userId).select('-password');
+        const userData=await userModel.findById(userId).select('-password');
 
         delete docData.slots_booked;
 
         const appointmentData= {
             userId,
             docId,
-            uerData,
+            userData,
             docData,
             amount:docData.fees,
             slotTime,
             slotDate,
-            date:date.now()
+            date:Date.now()
         }
 
         const newAppointment=new appointmentModel(appointmentData);
-        newAppointment.save()
+        await newAppointment.save()
 
         //save new slots data in docData
         await doctorModel.findByIdAndUpdate(docId,{slots_booked})
