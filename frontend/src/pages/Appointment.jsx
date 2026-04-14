@@ -23,6 +23,8 @@ const Appointment = () => {
   }
 
   const getAvailableSlots=async()=>{
+    if (!docInfo) return; 
+
     setDocSlots([])
 
     //getting current date
@@ -60,8 +62,7 @@ const Appointment = () => {
         const slotDate = day + "_" + month + "_" + year;
         const slotTime = formattedTime;
         
-        if (!docInfo || !docInfo.slots_booked) return;
-        const isSlotAvailable = docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(slotTime) ? false : true;
+       const isSlotAvailable = docInfo.slots_booked && docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(slotTime) ? false : true;
 
         if (isSlotAvailable) {
           timeSlots.push({
@@ -84,6 +85,11 @@ const Appointment = () => {
     }
     try {
       const date = docSlots[slotIndex][0].datetime;
+
+      if (!date) {
+          return toast.error("No slots available for this day");
+      }
+      
       let day = date.getDate();
       let month = date.getMonth() + 1;
       let year = date.getFullYear();
