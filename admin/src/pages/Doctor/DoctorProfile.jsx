@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useContext } from 'react'
 import { DoctorContext } from '../../context/DoctorContext'
 import { AppContext } from '../../context/AppContext';
@@ -8,6 +8,8 @@ const DoctorProfile = () => {
 
   const {dToken, profileData, getProfileData, setProfileData} = useContext(DoctorContext);
   const {currency, backendUrl}= useContext(AppContext);
+
+  const [isEdit,setIsEdit] = useState(false);
 
   useEffect(()=>{
     if(dToken){
@@ -37,26 +39,30 @@ const DoctorProfile = () => {
             <p className='text-sm text-gray-600 max-w-[700px] mt-1'>{profileData.about}</p>
           </div>
 
-          <p className='text-gray-600 font-medium mt-4'>Appointment fee: <span className='text-gray-800'>{currency} {profileData.fees}</span></p>
+          <p className='text-gray-600 font-medium mt-4'>Appointment fee: <span className='text-gray-800'> {currency} {isEdit ? <input type="number" onChange={(e)=>setProfileData(prev=>({...prev,fees:e.target.value}))} value= {profileData.fees}/>  : profileData.fees}</span></p>
 
           <div className='flex gap-2 py-2'>
             <p>Address:</p>
             <p className='text-sm'>
-              {profileData.address.line1};
+              {isEdit ? <input type="text" onChange={(e)=>setProfileData(prev=>({...prev, address:{...prev.address, line1:e.target.value }}))} value={profileData.address.line1}/>  : profileData.address.line1}
               <br />
               {profileData.address.line2}
             </p>
           </div>
 
           <div className='flex gap-1 pt-2'>
-            <input type="checkbox" name="" id="" />
+            <input checked={profileData.available} onChange={() => setProfileData(prev => ({ ...prev, available: !prev.available }))} type="checkbox" name="" id="" />
             <label htmlFor="">Available</label>
           </div>
-
-          <button className='px-4 py-1 border border-gray-300 text-sm rounded-lg mt-5 cursor-pointer hover:bg-[#6C757D] hover:text-white transition-all'>Edit</button>
+          
+          {
+            isEdit
+            ? <button onClick={()=>setIsEdit(false)} className='px-4 py-1 border border-gray-300 text-sm rounded-lg mt-5 cursor-pointer hover:bg-[#6C757D] hover:text-white transition-all'>Save</button>
+            :  <button onClick={()=>setIsEdit(true)} className='px-4 py-1 border border-gray-300 text-sm rounded-lg mt-5 cursor-pointer hover:bg-[#6C757D] hover:text-white transition-all'>Edit</button>
+          }
 
         </div>
-        
+
       </div>
 
     </div>
