@@ -24,7 +24,7 @@ const AppContextProvider=(props)=>{
     const value={
         calculateAge,
         slotDateFormat,
-        currency
+        currency,
     }
 
     return (

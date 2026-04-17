@@ -3,13 +3,41 @@ import { useContext } from 'react'
 import { DoctorContext } from '../../context/DoctorContext'
 import { AppContext } from '../../context/AppContext';
 import { useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const DoctorProfile = () => {
 
-  const {dToken, profileData, getProfileData, setProfileData} = useContext(DoctorContext);
-  const {currency, backendUrl}= useContext(AppContext);
+  const {dToken, profileData, getProfileData, setProfileData, backendUrl} = useContext(DoctorContext);
+  const {currency}= useContext(AppContext);
 
   const [isEdit,setIsEdit] = useState(false);
+
+  const updateProfile = async () =>{
+    try {
+      const updateData = {
+        address: profileData.address,
+        fees: profileData.fees,
+        available:profileData.available,
+      }
+
+
+      const {data} = await axios. post(backendUrl+'/api/doctor/update-profile', updateData, {headers:{dToken}})
+
+      if(data.success){
+        toast.success(data.message);
+        setIsEdit(false);
+        getProfileData()
+      }
+      else{
+        toast.error(data.message)
+      }
+
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  }
 
   useEffect(()=>{
     if(dToken){
@@ -44,7 +72,7 @@ const DoctorProfile = () => {
           <div className='flex gap-2 py-2'>
             <p>Address:</p>
             <p className='text-sm'>
-              {isEdit ? <input type="text" onChange={(e)=>setProfileData(prev=>({...prev, address:{...prev.address, line1:e.target.value }}))} value={profileData.address.line1}/>  : profileData.address.line1}
+              {isEdit ? <input type="text" id="available-checkbox" onChange={(e)=>setProfileData(prev=>({...prev, address:{...prev.address, line1:e.target.value }}))} value={profileData.address.line1}/>  : profileData.address.line1}
               <br />
               {profileData.address.line2}
             </p>
@@ -52,12 +80,12 @@ const DoctorProfile = () => {
 
           <div className='flex gap-1 pt-2'>
             <input checked={profileData.available} onChange={() => setProfileData(prev => ({ ...prev, available: !prev.available }))} type="checkbox" name="" id="" />
-            <label htmlFor="">Available</label>
+            <label htmlFor="available-checkbox">Available</label>
           </div>
           
           {
             isEdit
-            ? <button onClick={()=>setIsEdit(false)} className='px-4 py-1 border border-gray-300 text-sm rounded-lg mt-5 cursor-pointer hover:bg-[#6C757D] hover:text-white transition-all'>Save</button>
+            ? <button onClick={updateProfile} className='px-4 py-1 border border-gray-300 text-sm rounded-lg mt-5 cursor-pointer hover:bg-[#6C757D] hover:text-white transition-all'>Save</button>
             :  <button onClick={()=>setIsEdit(true)} className='px-4 py-1 border border-gray-300 text-sm rounded-lg mt-5 cursor-pointer hover:bg-[#6C757D] hover:text-white transition-all'>Edit</button>
           }
 
