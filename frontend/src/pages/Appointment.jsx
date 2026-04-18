@@ -4,6 +4,7 @@ import { AppContext } from '../context/AppContext';
 import { assets } from '../assets/assets';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import RelatedDoctors from '../components/RelatedDoctors';
 
 const Appointment = () => {
   const {docId}=useParams();
@@ -129,7 +130,7 @@ const Appointment = () => {
       {/* Doctor Details  */}
       <div className='flex flex-col sm:flex-row gap-4'>
         <div>
-          <img className='bg-[#495057] sm:max-w-72 rounded' src={docInfo.image} alt="docInfo image" />
+          <img className='bg-[#ADB5BD] sm:max-w-72 rounded' src={docInfo.image} alt="docInfo image" />
         </div>
         <div className='flex-1 border border-gray-300 rounded p-8 py-7 bg-white mx-2 sm:mx-9 mt-[-80px] sm:mt-0 shadow-lg'>
           <p className='flex items-center gap-2 text-2xl font-medium text-gray-900'>
@@ -182,6 +183,9 @@ const Appointment = () => {
         <button onClick={()=>bookAppointment()} className='bg-[#ADB5BD] text-white text-sm font-medium px-14 py-3 rounded-xl my-6 cursor-pointer'>Book an appointment</button>
 
       </div>
+
+      <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
+      
     </div>
   )
 }
