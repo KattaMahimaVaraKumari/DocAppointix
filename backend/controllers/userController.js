@@ -273,5 +273,60 @@ const verifyRazorpay = async (req,res)=>{
     }
 }
 
+// API to submit rating for a completed appointment
+const rateAppointment = async (req, res) => {
+    try {
+        const { userId, appointmentId, rating, review = '' } = req.body;
+        const numericRating = Number(rating);
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay}
+        if (!numericRating || numericRating < 1 || numericRating > 5) {
+            return res.json({ success: false, message: 'Rating must be between 1 and 5' });
+        }
+
+        const appointmentData = await appointmentModel.findById(appointmentId);
+        if (!appointmentData) {
+            return res.json({ success: false, message: 'Appointment not found' });
+        }
+
+        if (appointmentData.userId !== userId) {
+            return res.json({ success: false, message: 'Unauthorized action' });
+        }
+
+        if (appointmentData.cancelled || !appointmentData.isCompleted) {
+            return res.json({ success: false, message: 'Only completed appointments can be rated' });
+        }
+
+        if (appointmentData.isRated) {
+            return res.json({ success: false, message: 'Appointment already rated' });
+        }
+
+        const doctorData = await doctorModel.findById(appointmentData.docId);
+        if (!doctorData) {
+            return res.json({ success: false, message: 'Doctor not found' });
+        }
+
+        const updatedTotalScore = (doctorData.ratingTotalScore || 0) + numericRating;
+        const updatedRatingCount = (doctorData.ratingCount || 0) + 1;
+        const updatedAverage = updatedTotalScore / updatedRatingCount;
+
+        await doctorModel.findByIdAndUpdate(appointmentData.docId, {
+            ratingTotalScore: updatedTotalScore,
+            ratingCount: updatedRatingCount,
+            ratingAverage: Number(updatedAverage.toFixed(1)),
+        });
+
+        await appointmentModel.findByIdAndUpdate(appointmentId, {
+            isRated: true,
+            rating: numericRating,
+            review: review.trim(),
+        });
+
+        res.json({ success: true, message: 'Thank you for rating' });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay, rateAppointment}

@@ -5,6 +5,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import {useNavigate} from 'react-router-dom'
+import RateAppointment from '../components/RateAppointment';
 
 const MyAppointments = () => {
   
@@ -111,14 +112,17 @@ const MyAppointments = () => {
         {appointments.map((item,index)=>(
           <div className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b border-gray-200' key={index}>
             <div>
-              <img className='w-32 bg-[#ADB5BD]' src={item.docData.image} alt="" />
+              <div className='flex-shrink-0'>
+                <img className='w-32 h-32 bg-[#ADB5BD] object-cover object-top rounded-lg' src={item.docData.image} alt="" />
+              </div>
             </div>
             <div className='flex-1 text-sm text-zinc-600'>
               <p className='font-semibold text-neutral-800'>{item.docData.name}</p>
               <p>{item.docData.speciality}</p>
               <p className='font-medium text-zinc-700 mt-1'>Address:</p>
-              <p className='text-xs'>{item.docData.line1}</p>
-              <p className='text-xs'>{item.docData.address.line2}</p>
+              <p className='text-xs'>{item.docData.address?.line1}</p>
+              <p className='text-xs'>{item.docData.address?.line2}</p>
+              <p className='text-xs'>{item.docData.address?.city}, {item.docData.address?.state}, {item.docData.address?.country}</p>
               <p  className='text-xs mt-1'><span className='text-sm text-neutral-700 font-medium'>Date & Time:</span> {slotDateFormat(item.slotDate)} | {item.slotTime}</p>
             </div>
             <div></div>
@@ -128,6 +132,22 @@ const MyAppointments = () => {
               {!item.cancelled && !item.isCompleted && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className='text-stone-500 text-center sm:min-w-48 py-2 border rounded cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel appointment</button>}
               {item.cancelled && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 text-red-500 cursor-pointer'>Appointment cancelled</button> }
               {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500 cursor-pointer'>Completed</button> }
+              {item.isCompleted && !item.cancelled && !item.isRated && (
+                <RateAppointment
+                  appointmentId={item._id}
+                  backendUrl={backendUrl}
+                  token={token}
+                  onRated={() => {
+                    getUserAppointments()
+                    getDoctorsData()
+                  }}
+                />
+              )}
+              {item.isRated && (
+                <button className='sm:min-w-48 py-2 border border-amber-400 rounded text-amber-500 cursor-default'>
+                  Rated: {item.rating}/5
+                </button>
+              )}
             </div>
           </div>
         ))}

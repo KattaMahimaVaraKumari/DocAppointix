@@ -17,6 +17,13 @@ const Appointment = () => {
   const [docSlots,setDocSlots]=useState([])
   const [slotIndex,setSlotIndex]=useState(0);
   const [slotTime,setSlotTime]=useState('')
+
+  const renderStars = (ratingAverage = 0) => {
+    const fullStars = Math.round(ratingAverage)
+    return [1, 2, 3, 4, 5].map((star) => (
+      <span key={star} className={star <= fullStars ? 'text-amber-400' : 'text-gray-300'}>&#9733;</span>
+    ))
+  }
   
   const fetchDocInfo=async()=>{
     const docInfo = doctors.find(doc => doc._id === docId)
@@ -141,6 +148,13 @@ const Appointment = () => {
             <p>{docInfo.degree} - {docInfo.speciality}</p>
             <button className='py-0.5 px-2 border text-xs rounded-full cursor-pointer'>{docInfo.experience}</button>
           </div>
+          <div className='flex items-center gap-2 mt-2'>
+            <div className='flex items-center text-sm'>{renderStars(docInfo.ratingAverage)}</div>
+            <p className='text-sm text-gray-500'>{docInfo.ratingAverage || 0} ({docInfo.ratingCount || 0} reviews)</p>
+          </div>
+          <p className='text-xs text-gray-500 mt-1'>
+            {docInfo.address?.city ? `${docInfo.address.city}, ${docInfo.address.state}` : 'Location Pending'}
+          </p>
 
           {/* Doctor About  */}
           <div>
@@ -158,7 +172,7 @@ const Appointment = () => {
 
       {/* BOOKING SLOTS  */}
       <div className='sm:ml-72 sm:pl-4 font-medium text-gray-700'>
-        <p>Booking slots</p>
+        <p className='mt-6'>Booking slots</p>
         <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
           {
             docSlots.length && docSlots.map((item,index)=>(

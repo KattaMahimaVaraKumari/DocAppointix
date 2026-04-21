@@ -9,12 +9,17 @@ import userModel from "../models/userModel.js"
 //API for adding doctor
 const addDoctor = async (req, res) => {
     try {
-        const { name, email, password, speciality, degree, experience, about, fees, address } = req.body;
+        const { name, email, password, speciality, degree, experience, yearsOfExperience, about, fees, address } = req.body;
         const imageFile = req.file
 
         //checking for all data to add doctor
         if (!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address) {
             return res.json({ success: false, message: "Missing Details" })
+        }
+
+        const parsedAddress = JSON.parse(address);
+        if (!parsedAddress.city || !parsedAddress.state || !parsedAddress.country || !parsedAddress.pincode) {
+            return res.json({ success: false, message: "City, state, country and pincode are required" });
         }
 
         //validating email format
@@ -43,9 +48,10 @@ const addDoctor = async (req, res) => {
             speciality,
             degree,
             experience,
+            yearsOfExperience: Number(yearsOfExperience) || 1,
             about,
             fees,
-            address:JSON.parse(address),
+            address:parsedAddress,
             date:Date.now()
         }
 
