@@ -10,6 +10,7 @@ import Contact from './pages/Contact'
 import Appointment from './pages/Appointment'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import AiAssistant from './components/AiAssistant'
  import { ToastContainer, toast } from 'react-toastify';
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
         <Route path='/my-appointments' element={<MyAppointments/>}/>
         <Route path='/my-profile' element={<MyProfile/>}/>
         <Route path='/appointment/:docId' element={<Appointment/>}/>
+        <Route path='/ai-assistant' element={<AiAssistant/>}/>
       </Routes>
       <Footer/>
     </div>

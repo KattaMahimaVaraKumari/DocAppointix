@@ -39,6 +39,34 @@ const Navbar = () => {
                     <li className="py-1">CONTACT</li>
                     <hr className='border-none outline-none h-0.5 bg-[#CED4DA] w-3/5 m-auto hidden'/>
                 </NavLink>
+                
+                <NavLink
+                    to='/ai-assistant'
+                    className={({ isActive }) =>
+                        `flex items-center gap-2 px-4 py-1.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 border
+                        ${isActive
+                            ? 'bg-blue-100 text-blue-700 border-blue-200 shadow-sm font-bold'
+                            : 'bg-gradient-to-r from-slate-50 to-blue-50 text-gray-600 border-gray-200 hover:border-blue-200'
+                        }`
+                    }
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-blue-500" >
+                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                        <path d="M5 3v4" /><path d="M3 5h4" /><path d="M21 17v4" /><path d="M19 19h4" />
+                    </svg>
+                    <span className="text-xs font-bold uppercase tracking-tight">AI Triage</span>
+                </NavLink>
+                
             </ul>
             <div className='flex items-center gap-4'>
                 {
@@ -72,6 +100,7 @@ const Navbar = () => {
                         <NavLink onClick={()=>setShowMenu(false)} to='/doctors'><p className="px-4 py-2 rounded inline-block">ALL DOCTORS</p></NavLink>
                         <NavLink onClick={()=>setShowMenu(false)} to='/about'><p className="px-4 py-2 rounded inline-block">ABOUT</p></NavLink>
                         <NavLink onClick={()=>setShowMenu(false)} to='/contact'><p className="px-4 py-2 rounded inline-block">CONTACT</p></NavLink>
+                        <NavLink onClick={()=>setShowMenu(false)} to='/ai-assistant'><p className="px-4 py-2 rounded inline-block">AI TRIAGE</p></NavLink>
                     </ul>
                 </div>
             </div>
