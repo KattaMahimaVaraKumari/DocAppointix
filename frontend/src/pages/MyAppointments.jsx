@@ -110,6 +110,9 @@ const MyAppointments = () => {
       <p className='pb-3 mt-12 font-medium text-zinc-700 border-b border-gray-200'>My appointments</p>
       <div>
         {appointments.map((item,index)=>(
+          (() => {
+            const isCompleted = item.status === 'Completed' || item.isCompleted;
+            return (
           <div className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b border-gray-200' key={index}>
             <div>
               <div className='flex-shrink-0'>
@@ -124,15 +127,33 @@ const MyAppointments = () => {
               <p className='text-xs'>{item.docData.address?.line2}</p>
               <p className='text-xs'>{item.docData.address?.city}, {item.docData.address?.state}, {item.docData.address?.country}</p>
               <p  className='text-xs mt-1'><span className='text-sm text-neutral-700 font-medium'>Date & Time:</span> {slotDateFormat(item.slotDate)} | {item.slotTime}</p>
+              {item.status === 'Completed' && (
+                <div className='mt-3 bg-blue-50 border border-blue-200 rounded-xl p-3'>
+                  <p className='text-sm font-semibold text-blue-900'>Digital Prescription</p>
+                  <p className='text-sm text-blue-800 mt-1'>{item.notes || 'No prescription notes provided by doctor.'}</p>
+                  <p className='text-xs text-blue-700 mt-2'>Consultation completed. Please follow the instructions above.</p>
+                </div>
+              )}
             </div>
             <div></div>
             <div className='flex flex-col gap-2 justify-end'>
-              {!item.cancelled && item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Paid</button> }
-              {!item.cancelled && !item.payment && !item.isCompleted && <button onClick={()=>appointmentRazorpay(item._id)} className='text-stone-500 text-center sm:min-w-48 py-2 border rounded cursor-pointer hover:bg-[#495057] hover:text-white transition-all duration-300'>Pay Online</button>}
-              {!item.cancelled && !item.isCompleted && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className='text-stone-500 text-center sm:min-w-48 py-2 border rounded cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel appointment</button>}
-              {item.cancelled && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 text-red-500 cursor-pointer'>Appointment cancelled</button> }
-              {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500 cursor-pointer'>Completed</button> }
-              {item.isCompleted && !item.cancelled && !item.isRated && (
+              {!item.cancelled && item.payment && !isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Paid</button> }
+              {!item.cancelled && !item.payment && !isCompleted && <button onClick={()=>appointmentRazorpay(item._id)} className='text-stone-500 text-center sm:min-w-48 py-2 border rounded cursor-pointer hover:bg-[#495057] hover:text-white transition-all duration-300'>Pay Online</button>}
+              {!item.cancelled && !isCompleted && (
+                <button
+                  onClick={() => {
+                    navigate(`/consultation/${item._id}`)
+                    scrollTo(0, 0)
+                  }}
+                  className='text-center sm:min-w-48 py-2 border border-blue-500 text-blue-600 rounded cursor-pointer hover:bg-blue-600 hover:text-white transition-all duration-300'
+                >
+                  Join Consultation
+                </button>
+              )}
+              {!item.cancelled && !isCompleted && <button onClick={() => cancelAppointment(item._id)} className='text-stone-500 text-center sm:min-w-48 py-2 border rounded cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel appointment</button>}
+              {item.cancelled && !isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 text-red-500 cursor-pointer'>Appointment cancelled</button> }
+              {isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500 cursor-pointer'>Completed</button> }
+              {isCompleted && !item.cancelled && !item.isRated && (
                 <RateAppointment
                   appointmentId={item._id}
                   backendUrl={backendUrl}
@@ -150,6 +171,8 @@ const MyAppointments = () => {
               )}
             </div>
           </div>
+            )
+          })()
         ))}
       </div>
     </div>

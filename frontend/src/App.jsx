@@ -8,6 +8,7 @@ import MyAppointments from './pages/MyAppointments'
 import MyProfile from './pages/MyProfile'
 import Contact from './pages/Contact'
 import Appointment from './pages/Appointment'
+import VideoCall from './pages/VideoCall'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import AiAssistant from './components/AiAssistant'
@@ -29,6 +30,7 @@ const App = () => {
         <Route path='/my-profile' element={<MyProfile/>}/>
         <Route path='/appointment/:docId' element={<Appointment/>}/>
         <Route path='/ai-assistant' element={<AiAssistant/>}/>
+        <Route path='/consultation/:appointmentId' element={<VideoCall/>}/>
       </Routes>
       <Footer/>
     </div>

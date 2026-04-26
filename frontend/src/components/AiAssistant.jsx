@@ -11,6 +11,7 @@ const urgencyStyles = {
 }
 
 const disclaimerKey = 'docappointix_ai_disclaimer_ack'
+const triageStorageKey = 'docappointix_pending_triage'
 
 const AiAssistant = () => {
   const navigate = useNavigate()
@@ -67,7 +68,13 @@ const AiAssistant = () => {
       })
 
       if (data.success) {
-        setResult(data.triage)
+        const triagePayload = {
+          ...data.triage,
+          symptoms: symptoms.trim(),
+          symptomImage: imageBase64 || '',
+        }
+        setResult(triagePayload)
+        localStorage.setItem(triageStorageKey, JSON.stringify(triagePayload))
       } else {
         toast.error(data.message)
       }
@@ -161,6 +168,7 @@ const AiAssistant = () => {
               setImageBase64('')
               setPreviewImage('')
               setResult(null)
+              localStorage.removeItem(triageStorageKey)
             }}
             className='px-6 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-300 cursor-pointer'
           >

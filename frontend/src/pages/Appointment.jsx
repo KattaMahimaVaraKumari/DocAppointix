@@ -17,6 +17,7 @@ const Appointment = () => {
   const [docSlots,setDocSlots]=useState([])
   const [slotIndex,setSlotIndex]=useState(0);
   const [slotTime,setSlotTime]=useState('')
+  const triageStorageKey = 'docappointix_pending_triage'
 
   const renderStars = (ratingAverage = 0) => {
     const fullStars = Math.round(ratingAverage)
@@ -104,9 +105,17 @@ const Appointment = () => {
 
       const slotDate = day + "_" + month + "_" + year;
 
-      const {data}= await axios.post(backendUrl+'/api/user/book-appointment',{docId,slotDate,slotTime},{headers:{token}});
+      const storedTriage = localStorage.getItem(triageStorageKey)
+      const triageData = storedTriage ? JSON.parse(storedTriage) : {}
+
+      const {data}= await axios.post(
+        backendUrl+'/api/user/book-appointment',
+        {docId,slotDate,slotTime,triageData},
+        {headers:{token}}
+      );
       if(data.success){
         toast.success(data.message);
+        localStorage.removeItem(triageStorageKey)
         getDoctorsData();
         navigate('/my-appointments')
       }

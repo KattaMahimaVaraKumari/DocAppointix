@@ -118,7 +118,7 @@ const updateProfile = async (req, res) => {
 const bookAppointment = async (req,res) =>{
     try {
         
-        const {userId, docId, slotDate, slotTime}= req.body;
+        const {userId, docId, slotDate, slotTime, triageData = {}}= req.body;
 
         const docData = await doctorModel.findById(docId).select('-password');
 
@@ -154,7 +154,18 @@ const bookAppointment = async (req,res) =>{
             amount:docData.fees,
             slotTime,
             slotDate,
-            date:Date.now()
+            date:Date.now(),
+            status:'Pending',
+            triageData: {
+                urgency: triageData?.urgency || '',
+                symptoms: triageData?.symptoms || '',
+                explanation: triageData?.explanation || '',
+                diagnosis: triageData?.diagnosis || '',
+                specialty: triageData?.specialty || '',
+                symptomImage: triageData?.symptomImage || '',
+                imageUrl: triageData?.imageUrl || '',
+                home_care: triageData?.home_care || '',
+            }
         }
 
         const newAppointment=new appointmentModel(appointmentData);

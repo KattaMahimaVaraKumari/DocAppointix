@@ -34,9 +34,9 @@ const DoctorContextProvider=(props)=>{
 
     }
 
-    const completeAppointment = async (appointmentId) =>{
+    const completeAppointment = async (appointmentId, notes = '') =>{
         try {
-            const {data} = await axios.post(backendUrl+'/api/doctor/complete-appointment',{appointmentId},{headers:{dToken}});       
+            const {data} = await axios.post(backendUrl+'/api/doctor/complete-appointment',{appointmentId, notes},{headers:{dToken}});       
             if(data.success){
                 toast.success(data.message);
                 getAppointments();
