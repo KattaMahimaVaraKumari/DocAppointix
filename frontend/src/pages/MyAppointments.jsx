@@ -15,6 +15,8 @@ const MyAppointments = () => {
 
   const navigate = useNavigate();
 
+  const [recoveryData, setRecoveryData] = useState({ healthScore: 5, feedback: '' });
+
   const months=["", "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
   const slotDateFormat = (slotDate) =>{
@@ -52,6 +54,26 @@ const MyAppointments = () => {
       toast.error(error.message);
     }
 
+  }
+
+  const submitRecovery = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(backendUrl + '/api/user/update-recovery', {
+        appointmentId,
+        healthScore: recoveryData.healthScore,
+        feedback: recoveryData.feedback
+      }, { headers: { token } });
+      if (data.success) {
+        toast.success('Recovery log updated');
+        setRecoveryData({ healthScore: 5, feedback: '' });
+        getUserAppointments();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   }
 
 
@@ -132,6 +154,41 @@ const MyAppointments = () => {
                   <p className='text-sm font-semibold text-blue-900'>Digital Prescription</p>
                   <p className='text-sm text-blue-800 mt-1'>{item.notes || 'No prescription notes provided by doctor.'}</p>
                   <p className='text-xs text-blue-700 mt-2'>Consultation completed. Please follow the instructions above.</p>
+                </div>
+              )}
+              {item.status === 'Completed' && (
+                <div className='mt-3 bg-blue-50 border border-blue-200 rounded-xl p-4'>
+                  <p className='text-sm font-semibold text-blue-900 mb-3'>Daily Recovery Tracker</p>
+                  <div className='space-y-3'>
+                    <div>
+                      <label className='block text-xs text-blue-700 mb-1'>Health Score (1-10)</label>
+                      <input
+                        type='range'
+                        min='1'
+                        max='10'
+                        value={recoveryData.healthScore}
+                        onChange={(e) => setRecoveryData({ ...recoveryData, healthScore: Number(e.target.value) })}
+                        className='w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer'
+                      />
+                      <p className='text-center text-sm text-blue-800 mt-1'>{recoveryData.healthScore}/10</p>
+                    </div>
+                    <div>
+                      <label className='block text-xs text-blue-700 mb-1'>Daily Note</label>
+                      <textarea
+                        value={recoveryData.feedback}
+                        onChange={(e) => setRecoveryData({ ...recoveryData, feedback: e.target.value })}
+                        rows={2}
+                        placeholder='How are you feeling today?'
+                        className='w-full rounded-lg border border-blue-300 px-3 py-2 text-sm text-blue-900 placeholder:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400'
+                      />
+                    </div>
+                    <button
+                      onClick={() => submitRecovery(item._id)}
+                      className='w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-lg transition-all duration-300'
+                    >
+                      Submit Recovery Update
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

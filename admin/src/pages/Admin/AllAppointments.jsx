@@ -2,6 +2,7 @@ import React from 'react'
 import { useContext } from 'react'
 import { AdminContext } from '../../context/AdminContext'
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../../context/AppContext';
 import { assets } from '../../assets/assets';
 
@@ -9,6 +10,7 @@ const AllAppointments = () => {
 
   const {aToken, getAllAppointments, appointments, cancelAppointment}=useContext(AdminContext);
   const {calculateAge, slotDateFormat, currency}= useContext(AppContext);
+  const navigate = useNavigate();
 
   useEffect (()=>{
 
@@ -47,12 +49,21 @@ const AllAppointments = () => {
               <img className='w-8 rounded-full bg-gray-200' src={item.docData.image} alt="" /> <p>{item.docData.name}</p>
             </div>
             <p>{currency} {item.amount}</p>
-            {item.cancelled
-              ? <p className='text-red-400 text-xs font-medium'>Cancelled</p>
-              : item.isCompleted
-                ? <p className='text-green-500 text-xs font-medium'>Completed</p>
-                : <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
-            }
+            <div className='flex flex-col sm:items-end gap-2'>
+              <button
+                onClick={() => navigate(`/appointment/${item._id}`)}
+                className='text-blue-600 border border-blue-200 hover:bg-blue-50 rounded px-3 py-1 text-xs font-medium'
+              >
+                View Details
+              </button>
+              {item.cancelled ? (
+                <p className='text-red-400 text-xs font-medium'>Cancelled</p>
+              ) : item.isCompleted ? (
+                <p className='text-green-500 text-xs font-medium'>Completed</p>
+              ) : (
+                <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
+              )}
+            </div>
           </div>
         ))}
          

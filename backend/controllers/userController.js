@@ -339,5 +339,45 @@ const rateAppointment = async (req, res) => {
     }
 }
 
+// API to update recovery logs for completed appointments
+const updateRecovery = async (req, res) => {
+    try {
+        const { userId, appointmentId, healthScore, feedback = '' } = req.body;
+        const numericScore = Number(healthScore);
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay, rateAppointment}
+        if (!numericScore || numericScore < 1 || numericScore > 10) {
+            return res.json({ success: false, message: 'Health score must be between 1 and 10' });
+        }
+
+        const appointmentData = await appointmentModel.findById(appointmentId);
+        if (!appointmentData) {
+            return res.json({ success: false, message: 'Appointment not found' });
+        }
+
+        if (appointmentData.userId !== userId) {
+            return res.json({ success: false, message: 'Unauthorized action' });
+        }
+
+        if (!appointmentData.isCompleted) {
+            return res.json({ success: false, message: 'Only completed appointments can have recovery logs' });
+        }
+
+        const newLog = {
+            date: new Date(),
+            healthScore: numericScore,
+            feedback: feedback.trim()
+        };
+
+        await appointmentModel.findByIdAndUpdate(appointmentId, {
+            $push: { recoveryLogs: newLog }
+        });
+
+        res.json({ success: true, message: 'Recovery log updated successfully' });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay, verifyRazorpay, rateAppointment, updateRecovery}

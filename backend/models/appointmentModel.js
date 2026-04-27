@@ -17,7 +17,12 @@ const appointmentSchema = new mongoose.Schema({
     rating: { type: Number, default: 0 },
     review: { type: String, default: "" },
     notes: { type: String, default: "" },
-    triageData: { type: Object, default: {} }
+    triageData: { type: Object, default: {} },
+    recoveryLogs: [{
+        date: { type: Date, default: Date.now },
+        healthScore: { type: Number, min: 1, max: 10 },
+        feedback: { type: String, default: "" }
+    }]
 })
 
 const appointmentModel = mongoose.models.appointment || mongoose.model('appointment',appointmentSchema)

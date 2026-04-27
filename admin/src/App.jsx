@@ -7,6 +7,7 @@ import Sidebar from './components/Sidebar';
 import {Route, Routes} from 'react-router-dom'
 import Dashboard from './pages/Admin/Dashboard';
 import AllAppointments from './pages/Admin/AllAppointments';
+import AppointmentDetails from './pages/Admin/AppointmentDetails';
 import AddDoctor from './pages/Admin/AddDoctor';
 import DoctorsList from './pages/Admin/DoctorsList';
 import { DoctorContext } from './context/DoctorContext';
@@ -31,6 +32,7 @@ const App = () => {
           <Route path='/' element={<></>} />
           <Route path='/admin-dashboard' element={<Dashboard/>} />
           <Route path='/all-appointments' element={<AllAppointments/>} />
+          <Route path='/appointment/:id' element={<AppointmentDetails/>} />
           <Route path='/add-doctor' element={<AddDoctor/>} />
           <Route path='/doctor-list' element={<DoctorsList/>} />
 

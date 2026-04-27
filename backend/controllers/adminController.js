@@ -105,6 +105,19 @@ const appointmentsAdmin =async (req,res) =>{
     }
 }
 
+const appointmentById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const appointment = await appointmentModel.findById(id);
+        if (!appointment) {
+            return res.json({ success: false, message: 'Appointment not found' });
+        }
+        res.json({ success: true, appointment });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
 
 //API for appointment cancellation
 const appointmentCancel = async (req,res) =>{
@@ -158,4 +171,4 @@ const adminDashboard = async (req, res) => {
 
 }
 
-export { addDoctor, loginAdmin ,allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard}
+export { addDoctor, loginAdmin ,allDoctors, appointmentsAdmin, appointmentById, appointmentCancel, adminDashboard}
