@@ -21,9 +21,12 @@ const Navbar = () => {
     return (
         <div className='flex justify-between items-center px-4 sm:px-10 py-3 border-b border-b-gray-200 bg-white'>
             <div className='flex items-center gap-4 text-xs'>
-                <div className="flex items-center space-x-2 w-44">
-                    <img className="h-12 w-36 cursor-pointer"  src={assets.admin_logo} alt="" />
-                     <h1 className="text-xl font-bold cursor-pointer">DocAppointix</h1>         
+                <div
+                    onClick={() => window.location.href = import.meta.env.VITE_FRONTEND_URL}
+                    className="flex items-center space-x-2 w-44 cursor-pointer"
+                >
+                    <img className="h-12 w-36" src={assets.admin_logo} alt="logo" />
+                    <h1 className="text-xl font-bold">DocAppointix</h1>
                 </div>
                 <p className='border px-2.5 py-0.5 rounded-full border-gray-500'>{aToken ? 'Admin' : 'Doctor'}</p>
             </div>
