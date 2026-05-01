@@ -67,21 +67,12 @@ const Navbar = () => {
                     <span className="text-xs font-bold uppercase tracking-tight">AI Triage</span>
                 </NavLink>
                 <div className='flex items-center gap-3 ml-4'>
-                    <div className='flex items-center gap-5 ml-5'>
-                        <button
-                            onClick={() => window.location.href = import.meta.env.VITE_ADMIN_URL}
-                            className='bg-gray-100 text-gray-600 border border-gray-300 px-4 py-1.5 rounded-full text-xs font-bold hover:bg-gray-200 transition-all cursor-pointer whitespace-nowrap'
-                        >
-                            ADMIN
-                        </button>
-
-                        <button
-                            onClick={() => window.location.href = import.meta.env.VITE_ADMIN_URL + '?role=doctor'}
-                            className='bg-gray-100 text-gray-600 border border-gray-300 px-4 py-1.5 rounded-full text-xs font-bold hover:bg-gray-200 transition-all cursor-pointer whitespace-nowrap'
-                        >
-                            DOCTOR PANEL
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => window.location.href = import.meta.env.VITE_ADMIN_URL}
+                        className='bg-gray-100 text-gray-600 border border-gray-300 px-6 py-2 rounded-full text-xs font-bold hover:bg-gray-200 transition-all cursor-pointer whitespace-nowrap uppercase tracking-wider'
+                    >
+                        Management Portal
+                    </button>
                 </div>
             </ul>
             <div className='flex items-center gap-4'>
@@ -118,14 +109,11 @@ const Navbar = () => {
                         <NavLink onClick={()=>setShowMenu(false)} to='/contact'><p className="px-4 py-2 rounded inline-block">CONTACT</p></NavLink>
                         <NavLink onClick={()=>setShowMenu(false)} to='/ai-assistant'><p className="px-4 py-2 rounded inline-block">AI TRIAGE</p></NavLink>
 
-                        <p onClick={() => { setShowMenu(false); window.location.href = import.meta.env.VITE_ADMIN_URL }}
-                            className="px-4 py-2 rounded inline-block cursor-pointer">
-                            ADMIN
-                        </p>
-
-                        <p onClick={() => { setShowMenu(false); window.location.href = import.meta.env.VITE_ADMIN_URL + '?role=doctor' }}
-                            className="px-4 py-2 rounded inline-block cursor-pointer">
-                            DOCTOR PANEL
+                        <p
+                            onClick={() => { setShowMenu(false); window.location.href = import.meta.env.VITE_ADMIN_URL }}
+                            className="px-4 py-2 rounded inline-block cursor-pointer font-bold text-blue-600 hover:bg-gray-50 w-full text-center"
+                        >
+                            MANAGEMENT PORTAL
                         </p>
                     </ul>
                 </div>
