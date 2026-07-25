@@ -107,12 +107,3 @@ Patient → Symptom Input → AI Triage & Urgency Classification → Doctor Reco
 <img width="670" height="346" alt="image" src="https://github.com/user-attachments/assets/ac1c16a2-ae3c-4dff-8e4d-b49111dae7a2" />
 
 <img width="636" height="412" alt="image" src="https://github.com/user-attachments/assets/7fba9dd0-02bc-4881-a9cb-3a969ab10b09" />
-
----
-
-## Future Enhancements
-
-* Early disease prediction using patient history and health patterns
-* Electronic Health Record (EHR) integration
-* Multilingual and voice-based support
-* Cloud-native deployment for large-scale healthcare environments
