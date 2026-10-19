@@ -4,6 +4,8 @@ import { AdminContext } from '../context/AdminContext'
 import { useNavigate } from "react-router-dom";
 import { DoctorContext } from '../context/DoctorContext';
 
+const patientWebsiteUrl = 'https://docappointix-frontend.onrender.com';
+
 const Navbar = () => {
 
     const { aToken , setAToken } = useContext(AdminContext)
@@ -20,14 +22,20 @@ const Navbar = () => {
     }
     return (
         <div className='flex justify-between items-center px-4 sm:px-10 py-3 border-b border-b-gray-200 bg-white'>
-            <div className='flex items-center gap-4 text-xs'>
-                <div
-                    onClick={() => window.location.href = import.meta.env.VITE_FRONTEND_URL}
-                    className="flex items-center space-x-2 w-44 cursor-pointer"
+            <div className='flex flex-wrap items-center gap-4 text-xs'>
+                <a
+                    href={patientWebsiteUrl}
+                    className="flex items-center space-x-2 w-44"
                 >
                     <img className="h-12 w-36" src={assets.admin_logo} alt="logo" />
                     <h1 className="text-xl font-bold">DocAppointix</h1>
-                </div>
+                </a>
+                <a
+                    href={patientWebsiteUrl}
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium underline whitespace-nowrap"
+                >
+                    Back to Patient Website
+                </a>
                 <p className='border px-2.5 py-0.5 rounded-full border-gray-500'>{aToken ? 'Admin' : 'Doctor'}</p>
             </div>
             <button onClick={logout} className='bg-[#6C757D] text-white text-sm px-10 py-2 rounded cursor-pointer'>Logout</button>
