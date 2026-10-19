@@ -35,10 +35,9 @@ const registerUser = async (req, res) => {
             password: hashedPassword
         }
         const newUser = new userModel(userData);
-        const user=await newUser.save();
+        await newUser.save();
 
-        const token= jwt.sign({id:user._id},process.env.JWT_SECRET);
-        res.json({success:true, token})
+        res.json({success:true, message:'Account created successfully. Please log in.'})
 
     } catch (error) {
         console.log(error);
