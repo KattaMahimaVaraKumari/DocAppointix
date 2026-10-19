@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { AdminContext } from './context/AdminContext';
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar';
-import {Route, Routes} from 'react-router-dom'
+import {Navigate, Route, Routes} from 'react-router-dom'
 import Dashboard from './pages/Admin/Dashboard';
 import AllAppointments from './pages/Admin/AllAppointments';
 import AppointmentDetails from './pages/Admin/AppointmentDetails';
@@ -29,7 +29,7 @@ const App = () => {
         <Sidebar/>
         <Routes>
           {/* Admin Route */}
-          <Route path='/' element={<></>} />
+          <Route path='/' element={<Navigate to={aToken ? '/admin-dashboard' : '/doctor-dashboard'} replace />} />
           <Route path='/admin-dashboard' element={<Dashboard/>} />
           <Route path='/all-appointments' element={<AllAppointments/>} />
           <Route path='/appointment/:id' element={<AppointmentDetails/>} />
