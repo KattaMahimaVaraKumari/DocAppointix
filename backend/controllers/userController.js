@@ -120,6 +120,11 @@ const bookAppointment = async (req,res) =>{
         
         const {userId, docId, slotDate, slotTime, triageData = {}}= req.body;
 
+        const userData = await userModel.findById(userId).select('-password');
+        if (!userData) {
+            return res.status(401).json({ success: false, message: 'User account not found. Please log in again.' });
+        }
+
         const docData = await doctorModel.findById(docId).select('-password');
 
         if(!docData.available){
@@ -141,8 +146,6 @@ const bookAppointment = async (req,res) =>{
             slots_booked[slotDate]=[];
             slots_booked[slotDate].push(slotTime);
         }
-
-        const userData=await userModel.findById(userId).select('-password');
 
         delete docData.slots_booked;
 

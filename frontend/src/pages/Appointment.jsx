@@ -8,7 +8,7 @@ import RelatedDoctors from '../components/RelatedDoctors';
 
 const Appointment = () => {
   const {docId}=useParams();
-  const {doctors,currencySymbol, backendUrl, token, getDoctorsData}=useContext(AppContext)
+  const {doctors,currencySymbol, backendUrl, token, setToken, setUserData, getDoctorsData}=useContext(AppContext)
   const daysOfWeek=['SUN','MON','TUE','WED','THU','FRI','SAT']
 
   const navigate= useNavigate()
@@ -125,6 +125,13 @@ const Appointment = () => {
 
     } catch (error) {
       console.log(error);
+      if (error.response?.status === 401) {
+        localStorage.removeItem('token')
+        setToken(false)
+        setUserData(false)
+        toast.warn('Your session is no longer valid. Please log in again.')
+        return navigate('/login')
+      }
       toast.error(error.message);
     }
   }
