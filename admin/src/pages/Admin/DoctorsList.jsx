@@ -12,10 +12,10 @@ const DoctorsList = () => {
   }, [aToken])
 
   return (
-    <div className='m-5 h-full overflow-y-auto pb-10 custom-scrollbar'>
+    <div className='m-5 min-w-0 flex-1 h-full overflow-y-auto pb-10 custom-scrollbar'>
       <h1 className='text-xl font-semibold text-slate-700'>All Doctors</h1>
 
-      <div className='w-full grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-6 pt-5'>
+      <div className='w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 pt-5'>
         {doctors.map((item, index) => (
           <div
             key={item._id || index}

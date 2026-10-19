@@ -79,10 +79,10 @@ const AddDoctor = () => {
     }
 
     return (
-        <form onSubmit={onSubmitHandler} className='m-5 w-full'>
+        <form onSubmit={onSubmitHandler} className='m-5 min-w-0 flex-1'>
             <p className='mb-3 text-lg font-semibold text-gray-800'>Add Doctor</p>
 
-            <div className='bg-white px-8 py-8 border border-blue-100 shadow-xl rounded-2xl w-full max-w-5xl max-h-[80vh] overflow-y-scroll'>
+            <div className='bg-white px-8 py-8 border border-blue-100 shadow-xl rounded-2xl w-full max-h-[80vh] overflow-y-scroll'>
 
                 {/* Profile Picture Section */}
                 <div className='flex items-center gap-4 mb-8 text-gray-500'>

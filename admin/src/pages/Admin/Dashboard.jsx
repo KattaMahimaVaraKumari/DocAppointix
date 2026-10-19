@@ -18,9 +18,9 @@ const Dashboard = () => {
   }, [aToken]);
 
   return dashData && (
-    <div className='m-5'>
+    <div className='m-5 min-w-0 flex-1'>
 
-      <div className='flex flex-wrap gap-3'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3'>
 
         <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
           <img className='w-14' src={assets.doctor_icon} alt="" />
