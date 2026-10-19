@@ -46,11 +46,11 @@ const DoctorProfile = () => {
   },[dToken])
 
   return profileData && (
-    <div>
+    <div className='m-5 min-w-0 flex-1'>
 
-      <div className='flex flex-col gap-4 m-5'>
-        <div>
-          <img className='bg-[#ADB5BD] w-full sm:max-w-64 rounded-lg' src={profileData.image} alt="" />
+      <div className='grid grid-cols-1 lg:grid-cols-[minmax(220px,300px)_minmax(0,1fr)] items-start gap-6'>
+        <div className='flex justify-center lg:justify-start'>
+          <img className='bg-[#ADB5BD] w-full max-w-72 aspect-[4/5] object-cover object-top rounded-lg' src={profileData.image} alt="" />
         </div>
 
         <div className='flex-1 border border-gray-300 rounded-lg p-8 py-7 bg-white'>
@@ -64,7 +64,7 @@ const DoctorProfile = () => {
           {/* Doc About */}
           <div>
             <p className='flex items-center gap-1 text-sm font-medium text-neutral-800 mt-3'>About:</p>
-            <p className='text-sm text-gray-600 max-w-[700px] mt-1'>{profileData.about}</p>
+            <p className='text-sm text-gray-600 mt-1'>{profileData.about}</p>
           </div>
 
           <p className='text-gray-600 font-medium mt-4'>Appointment fee: <span className='text-gray-800'> {currency} {isEdit ? <input type="number" onChange={(e)=>setProfileData(prev=>({...prev,fees:e.target.value}))} value= {profileData.fees}/>  : profileData.fees}</span></p>
